@@ -1,13 +1,16 @@
 class UsersController < ApplicationController
 
+  #プロフィール画面を表示
   def show
     @user = User.find(params[:id])
   end
 
+  #サインアップ画面を表示
   def new
     @user = User.new
   end
 
+  #サインアップ
   def create
     @user = User.new(user_params)
     if @user.save
