@@ -17,14 +17,20 @@ class User < ApplicationRecord
         BCrypt::Password.create(string, cost: cost)
     end
 
-  # ランダムなトークンを返す
-  def self.new_token
-    SecureRandom.urlsafe_base64
-  end
+    # ランダムなトークンを返す
+    def self.new_token
+        SecureRandom.urlsafe_base64
+    end
 
-  # 永続的セッションのためにユーザーをデータベースに記憶する
-  def remember
-    self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
-  end
+    # 永続的セッションのためにユーザーをデータベースに記憶する
+    # （usersテーブルのremember_digestに記憶ダイジェストを保存。記憶トークンはクッキーに保存される。）
+    def remember
+        self.remember_token = User.new_token
+        update_attribute(:remember_digest, User.digest(remember_token))
+    end
+
+    # 渡されたトークンがダイジェストと一致したらtrueを返す
+    def authenticated?(remember_token)
+        BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    end
 end
