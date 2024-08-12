@@ -26,7 +26,9 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out
+    #user.forgetがNoMethodErrorになるのを防ぐためにログインしているか判定
+    log_out if logged_in?
+    # ホーム画面にリダイレクト
     redirect_to root_url, status: :see_other
   end
 end
