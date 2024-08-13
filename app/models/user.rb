@@ -25,7 +25,10 @@ class User < ApplicationRecord
     # 永続的セッションのためにユーザーをデータベースに記憶する
     # （usersテーブルのremember_digestに記憶ダイジェストを保存。記憶トークンは有効期限20年後でクッキーに保存される。）
     def remember
+        # Cookieにremember_tokenトークンを書き込むためにいったん@userにremember_tokenを保存
+        # @userに格納したremember_tokenはassignを使うことで、テストから参照可能になる
         self.remember_token = User.new_token
+        # usersテーブルのremember_digestに記憶ダイジェストを保存
         update_attribute(:remember_digest, User.digest(remember_token))
     end
 

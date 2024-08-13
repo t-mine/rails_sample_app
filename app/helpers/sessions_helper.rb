@@ -17,8 +17,9 @@ module SessionsHelper
 
   # セッションのuser_id、または、永続化したuser_id(有効期限が20年後のCookie)に対応するユーザーを返す
   def current_user
-    
+
     if (user_id = session[:user_id])
+      puts "session[:user_id]#{session[:user_id]}"
       # セッションのuser_idに対応するユーザをDBから取得して返却。
       # @current_userに値を持つ場合はDB検索をスキップ(キャッシュ)
       @current_user ||= User.find_by(id: user_id)
